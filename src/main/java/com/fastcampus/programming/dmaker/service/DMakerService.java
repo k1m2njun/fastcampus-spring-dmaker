@@ -25,31 +25,33 @@ public class DMakerService {
     // RequiredArgs 생성자가 자동으로 만들어진다.
 
     @Transactional
-    public void createDeveloper(CreateDeveloper.Request request) {
+    public CreateDeveloper.Response createDeveloper(CreateDeveloper.Request request) {
         validateCreateDeveloperRequest(request);
 
         Developer developer = Developer.builder()
-                .developerLevel(DeveloperLevel.JUNIOR)
-                .developerSkillType(DeveloperSkillType.FRONT_END)
-                .experienceYears(2)
-                .name("Olaf")
-                .age(5)
+                .developerLevel(request.getDeveloperLevel())
+//                .developerSkillType(DeveloperSkillType.FRONT_END)
+                .developerSkillType(request.getDeveloperSkillType())
+                .experienceYears(request.getExperienceYears())
+                .memberId(request.getMemberId())
+                .name(request.getName())
+                .age(request.getAge())
                 .build();
 
         developerRepository.save(developer); // Entity를 Repository를 통해 DB에 영속화
+        return CreateDeveloper.Response.fromEntity(developer);
     }
 
     private void validateCreateDeveloperRequest(CreateDeveloper.Request request) {
         // business validation
         DeveloperLevel developerLevel = request.getDeveloperLevel();
         Integer experienceYears = request.getExperienceYears();
-
         if (developerLevel == DeveloperLevel.SENIOR
                 && experienceYears < 10) {
 //            throw new RuntimeException("SENIOR eed 10 years experience.");
             throw new DMakerException(DMakerErrorCode.LEVEL_EXPERIENCE_YEARS_NOT_MATCHED);
         }
-        if (developerLevel == DeveloperLevel.JUNIOR
+        if (developerLevel == DeveloperLevel.JUNGNIOR
                 && (experienceYears < 4 || experienceYears > 10)) {
             throw new DMakerException(DMakerErrorCode.LEVEL_EXPERIENCE_YEARS_NOT_MATCHED);
         }
@@ -65,7 +67,5 @@ public class DMakerService {
                 .ifPresent((developer -> {
                     throw new DMakerException(DMakerErrorCode.DUPLICATED_MEMBER_ID);
                 }));
-
-
     }
 }

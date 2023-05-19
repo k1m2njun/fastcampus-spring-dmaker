@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -30,14 +29,12 @@ public class DMakerController {
     }
 
     @PostMapping("/create-developer")
-    public List<String> createAllDevelopers(
+    public CreateDeveloper.Response createDevelopers(
             // 앞의 자바 빈 발리데이션이 동작하려면 Valid가 있어야 한다.
             @Valid @RequestBody CreateDeveloper.Request request
             ) {
         log.info("Request : {}", request);
 
-        dMakerService.createDeveloper(request);
-
-        return Collections.singletonList("Olaf"); // 단일 객체를 들고있는 리스트
+        return dMakerService.createDeveloper(request);
     }
 }
