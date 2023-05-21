@@ -1,6 +1,8 @@
 package com.fastcampus.programming.dmaker.service;
 
 import com.fastcampus.programming.dmaker.dto.CreateDeveloper;
+import com.fastcampus.programming.dmaker.dto.DeveloperDetailDto;
+import com.fastcampus.programming.dmaker.dto.DeveloperDto;
 import com.fastcampus.programming.dmaker.entity.Developer;
 import com.fastcampus.programming.dmaker.exception.DMakerErrorCode;
 import com.fastcampus.programming.dmaker.exception.DMakerException;
@@ -13,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,5 +71,22 @@ public class DMakerService {
                 .ifPresent((developer -> {
                     throw new DMakerException(DMakerErrorCode.DUPLICATED_MEMBER_ID);
                 }));
+    }
+
+    public List<DeveloperDto> getAllDevelopers() {
+        return developerRepository.findAll()
+                .stream().map(DeveloperDto::fromEntity)
+                .collect(Collectors.toList());
+    } // Dto 타입으로 변경
+
+    public DeveloperDetailDto getDeveloperDetail(String memberId) {
+        return developerRepository.findByMemberId(memberId)
+                //findByMemberId 는 Optional인데, 이것은
+                // map 함수를 지원한다.
+                .map(DeveloperDetailDto::fromEntity) // DeveloperEntity -> DeveloperDetailEntity
+//                .get()
+                .orElseThrow(() -> new DMakerException(DMakerErrorCode.NO_DEVELOPER));
+                // 값을 못가져오면 예외처리
+
     }
 }
