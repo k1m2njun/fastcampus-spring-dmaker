@@ -14,7 +14,7 @@ public class EditDeveloper {
     @NoArgsConstructor
     @Builder
     @ToString
-    public static class Request { // 개발자 생성에 대한 요청
+    public static class Request { // 개발자 정보 수정에 대한 요청
         @NotNull
         private DeveloperLevel developerLevel;
         @NotNull
