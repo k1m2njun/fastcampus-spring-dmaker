@@ -108,7 +108,7 @@ public class DMakerService {
 
     }
 
-    private static void validateDeveloperLevel(DeveloperLevel developerLevel, Integer experienceYears) {
+    private void validateDeveloperLevel(DeveloperLevel developerLevel, Integer experienceYears) {
         if (developerLevel == DeveloperLevel.SENIOR
                 && experienceYears < 10) {
 //            throw new RuntimeException("SENIOR eed 10 years experience.");
