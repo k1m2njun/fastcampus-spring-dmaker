@@ -34,7 +34,7 @@ public class DMakerController {
 
     @GetMapping("/developer/{memberId}")
     public DeveloperDetailDto getAllDeveloperDetail(
-            @PathVariable String memberId // 경로의 {}안에 표시할 변수값
+            @PathVariable final String memberId // 경로의 {}안에 표시할 변수값
     ) {
         log.info("GET /developers HTTP/1.1");
 
@@ -44,7 +44,7 @@ public class DMakerController {
     @PostMapping("/create-developer")
     public CreateDeveloper.Response createDevelopers(
             // 앞의 자바 빈 발리데이션이 동작하려면 Valid가 있어야 한다.
-            @Valid @RequestBody CreateDeveloper.Request request
+            @Valid @RequestBody final CreateDeveloper.Request request
             ) {
         log.info("Request : {}", request);
 
@@ -53,8 +53,8 @@ public class DMakerController {
 
     @PutMapping("/developer/{memberId}")
     public DeveloperDetailDto editDeveloper(
-            @PathVariable String memberId,
-            @Valid @RequestBody EditDeveloper.Request request
+            @PathVariable final String memberId,
+            @Valid @RequestBody final EditDeveloper.Request request
     ) {
         log.info("GET /developers HTTP/1.1");
 
@@ -63,7 +63,7 @@ public class DMakerController {
 
     @DeleteMapping("/developer/{memberId}")
     public DeveloperDetailDto deleteDeveloper(
-            @PathVariable String memberId
+            @PathVariable final String memberId
     ) {
         return dMakerService.deleteDeveloper(memberId);
     }
